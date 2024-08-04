@@ -2,6 +2,7 @@ package com.rizzatto.ToDo.entity;
 
 import com.rizzatto.ToDo.enums.Priority;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,21 +11,31 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="Tasks")
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "task_id")
     private Long id;
 
+    @Column(name = "task_name")
     private String name;
+    
+    @Column(name = "task_description")
     private String description;
+    
+    @Column(name = "task_done")
     private Boolean done;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "task_priority")
     private Priority priority;
     
+    @Column(name = "task_points")
     private Integer points;
 
     @ManyToOne
@@ -34,11 +45,11 @@ public class Task {
     public Task(){
     }
 
-    public Task(Long id, String name, String description, Boolean done, Priority priority, Points points, User user) {
+    public Task(Long id, String name, String description, Priority priority, User user) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.done = done;
+        this.done = false;
         this.priority = priority;
 
         this.points = Points.calcPoints(priority);
