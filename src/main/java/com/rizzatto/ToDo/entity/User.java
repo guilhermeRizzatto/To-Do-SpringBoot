@@ -8,11 +8,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 @Entity
-@Table(name="Users")
+@Table(name="users")
 public class User {
 
     @Id
@@ -29,7 +30,7 @@ public class User {
     @Column(name = "user_password")
     private String password;
 
-    @Transient
+    @OneToMany(mappedBy = "user")
     private List<Task> tasks = new ArrayList<>();
 
     public User(){

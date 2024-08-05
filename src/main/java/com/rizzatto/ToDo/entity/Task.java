@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="Tasks")
+@Table(name="tasks")
 public class Task {
 
     @Id
@@ -39,7 +39,7 @@ public class Task {
     private Integer points;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "usr_id")
     private User user;
 
     public Task(){
@@ -100,8 +100,8 @@ public class Task {
         return points;
     }
 
-    public void setPoints(Integer points) {
-        this.points = points;
+    public void setPoints(Priority priority) {
+        this.points = Points.calcPoints(priority);
     }
 
     public User getUser() {
