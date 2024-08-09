@@ -10,18 +10,20 @@ public class TaskDtoRequest {
     private String name;
     private String description;
     private Priority priority;
+    private Boolean done;
     private User user;
     
-	public TaskDtoRequest(String name, String description, Priority priority, User user) {
+	public TaskDtoRequest(String name, String description, Priority priority, User user, Boolean done) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.priority = priority;
+		this.done = done;
 		this.user = user;
 	}
 	
 	public static Task createTask(TaskDtoRequest request) {
-		Task task = new Task(Long.valueOf(0), request.getName(), request.getDescription(), request.getPriority(), request.getUser());
+		Task task = new Task(Long.valueOf(0), request.getName(), request.getDescription(), request.getPriority(), request.getUser(), request.getDone());
 		
 		return task;
 	}
@@ -57,6 +59,16 @@ public class TaskDtoRequest {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	public Boolean getDone() {
+		return done;
+	}
+
+	public void setDone(Boolean done) {
+		this.done = done;
+	}
+	
+	
     
     
 

@@ -11,39 +11,35 @@ import com.rizzatto.ToDo.repository.TaskRepository;
 
 @Service
 public class TaskService {
-	
+
 	@Autowired
 	private TaskRepository repository;
-	
+
 	public Task save(TaskDtoRequest taskRequest) {
 		Task task = TaskDtoRequest.createTask(taskRequest);
 		return repository.save(task);
 	}
-	
+
 	public List<Task> getByUserId(Long id) {
 		return repository.findByUserId(id);
 	}
-	
+
 	public Task update(Long id, TaskDtoRequest taskRequest) {
 		Task task = repository.getReferenceById(id);
-		
+
 		Task taskToUpdate = TaskDtoRequest.createTask(taskRequest);
-		
-		if(!task.getName().equals(taskToUpdate.getName())) {
-			task.setName(taskToUpdate.getName());
-		} else if(!task.getPriority().equals(taskToUpdate.getPriority())) {
-			task.setPriority(taskToUpdate.getPriority());
-			task.setPoints(task.getPriority());
-		}
-		
+
+		task.setName(taskToUpdate.getName());
 		task.setDescription(taskToUpdate.getDescription());
-	
+		task.setPriority(taskToUpdate.getPriority());
+		task.setPoints();
+		task.setDone(taskToUpdate.getDone());
+
 		return repository.save(task);
 	}
-	
+
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
-	
 
 }

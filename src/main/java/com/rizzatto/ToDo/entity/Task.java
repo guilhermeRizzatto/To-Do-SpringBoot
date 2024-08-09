@@ -45,11 +45,11 @@ public class Task {
     public Task(){
     }
 
-    public Task(Long id, String name, String description, Priority priority, User user) {
+    public Task(Long id, String name, String description, Priority priority, User user, Boolean done) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.done = false;
+        this.done = done;
         this.priority = priority;
 
         this.points = Points.calcPoints(priority);
@@ -100,8 +100,8 @@ public class Task {
         return points;
     }
 
-    public void setPoints(Priority priority) {
-        this.points = Points.calcPoints(priority);
+    public void setPoints() {
+        this.points = Points.calcPoints(this.priority);
     }
 
     public User getUser() {
