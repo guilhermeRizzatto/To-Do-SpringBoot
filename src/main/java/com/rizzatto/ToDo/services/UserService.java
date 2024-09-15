@@ -32,6 +32,20 @@ public class UserService {
 		return repository.findById(id);
 	}
 	
+	public User login(String email, String password){
+		Optional<User> obj = repository.findByEmail(email);
+		if(obj.isEmpty()) {
+			throw new RuntimeException("Dont exists any account with this email");
+		}
+		User user = obj.get();
+		
+		if(!user.getPassword().equals(password)) {
+			throw new RuntimeException("Wrong password");
+		}
+		
+		return user;
+	}
+	
 	public Optional<User> getByEmail(String email){
 		return repository.findByEmail(email);
 	}

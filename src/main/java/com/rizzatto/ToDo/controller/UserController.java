@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +25,6 @@ public class UserController {
 	@Autowired
 	private UserService service;
 	
-	@PostMapping("/post")
-	public ResponseEntity<User> saveUser(@RequestBody UserDtoRequest request){
-		User user = service.save(request);
-		return ResponseEntity.ok(user);
-	}
-	
 	@GetMapping("/get/all")
 	public ResponseEntity<List<UserDtoResponse>> get(){
 		List<User> users = service.getUsers();
@@ -40,7 +33,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/get/one")
-	public ResponseEntity<UserDtoResponse> get(@RequestParam(required = false) String email, @RequestParam(required = false) Long id){
+	public ResponseEntity<UserDtoResponse> get(@RequestParam(required = false) String email, @RequestParam(required = false) String password, @RequestParam(required = false) Long id){
 		Optional<User> user = null;
 		if(email != null) {
 			user = service.getByEmail(email);
