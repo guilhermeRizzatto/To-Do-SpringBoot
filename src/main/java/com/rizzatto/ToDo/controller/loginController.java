@@ -22,13 +22,18 @@ public class loginController {
 	private UserService service;
 
 	@PostMapping("/create")
-	public ResponseEntity<User> saveUser(@RequestBody UserDtoRequest request) {
-		User user = service.save(request);
-		return ResponseEntity.ok(user);
+	public ResponseEntity<?> saveUser(@RequestBody UserDtoRequest request) {
+		try {
+			User user = service.save(request);
+			return ResponseEntity.ok(user);
+		} catch (Exception e) {
+			return ResponseEntity.status(400).body(e.toString());
+		}
 	}
 
 	@GetMapping("/enter")
-	public ResponseEntity<?> get(@RequestParam(required = false) String email, @RequestParam(required = false) String password) {
+	public ResponseEntity<?> get(@RequestParam(required = false) String email,
+			@RequestParam(required = false) String password) {
 		try {
 			User user = null;
 			if (email != null && password != null) {

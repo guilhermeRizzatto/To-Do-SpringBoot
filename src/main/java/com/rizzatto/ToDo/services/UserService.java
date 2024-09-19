@@ -16,12 +16,12 @@ public class UserService {
 	@Autowired
 	private UserRepository repository;
 	
-	public User save(UserDtoRequest userRequest){
+	public User save(UserDtoRequest userRequest) throws Exception{
 		if(repository.findByEmail(userRequest.getEmail()).isEmpty()){
 			User user = UserDtoRequest.createUser(userRequest);
 			return repository.save(user);
 		}
-		throw new RuntimeException("This email already exist");
+		throw new Exception("This email already exist");
 	}
 	
 	public List<User> getUsers(){
@@ -32,15 +32,15 @@ public class UserService {
 		return repository.findById(id);
 	}
 	
-	public User login(String email, String password){
+	public User login(String email, String password) throws Exception{
 		Optional<User> obj = repository.findByEmail(email);
 		if(obj.isEmpty()) {
-			throw new RuntimeException("Dont exists any account with this email");
+			throw new Exception("Dont exists any account with this email");
 		}
 		User user = obj.get();
 		
 		if(!user.getPassword().equals(password)) {
-			throw new RuntimeException("Wrong password");
+			throw new Exception("Wrong password");
 		}
 		
 		return user;
