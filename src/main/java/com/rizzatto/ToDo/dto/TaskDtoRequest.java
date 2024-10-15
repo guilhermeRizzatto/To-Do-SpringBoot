@@ -17,13 +17,13 @@ public class TaskDtoRequest {
 		super();
 		this.name = name;
 		this.description = description;
-		this.priority = priority;
+		this.priority = Priority.HIGH;
 		this.done = done;
 		this.user = user;
 	}
 	
 	public static Task createTask(TaskDtoRequest request) {
-		Task task = new Task(Long.valueOf(0), request.getName(), request.getDescription(), request.getPriority(), request.getUser(), request.getDone());
+		Task task = new Task(Long.valueOf(0), request.getName(), request.getDescription(), Priority.HIGH, request.getUser(), request.getDone());
 		
 		return task;
 	}
