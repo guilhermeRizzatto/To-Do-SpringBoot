@@ -19,7 +19,7 @@ public class TaskDtoRequest {
 		this.description = description;
 		this.priority = Priority.HIGH;
 		this.done = done;
-		this.user = user;
+		this.user = new User();
 	}
 	
 	public static Task createTask(TaskDtoRequest request) {

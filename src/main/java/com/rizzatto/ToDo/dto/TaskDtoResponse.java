@@ -14,7 +14,6 @@ public class TaskDtoResponse {
 	private Boolean done;
 	private Priority priority;
 	private Integer points;
-	private UserDtoForTask user;
 
 	public TaskDtoResponse(Task task) {
 		super();
@@ -24,7 +23,6 @@ public class TaskDtoResponse {
 		this.done = task.getDone();
 		this.priority = task.getPriority();
 		this.points = task.getPoints();
-		this.user = new UserDtoForTask(task.getUser());
 	}
 
 	public Long getId() {
@@ -75,13 +73,6 @@ public class TaskDtoResponse {
 		this.points = points;
 	}
 
-	public UserDtoForTask getUser() {
-		return user;
-	}
-
-	public void setUser(UserDtoForTask user) {
-		this.user = user;
-	}
 	
 	public static List<TaskDtoResponse> createTasksDto(List<Task> tasks) {
 		List<TaskDtoResponse> tasksDto = new ArrayList<TaskDtoResponse>();
