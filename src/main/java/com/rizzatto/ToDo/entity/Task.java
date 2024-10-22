@@ -22,10 +22,10 @@ public class Task {
     @Column(name = "task_id")
     private Long id;
 
-    @Column(name = "task_name")
+    @Column(name = "task_name", columnDefinition = "TEXT")
     private String name;
     
-    @Column(name = "task_description")
+    @Column(name = "task_description", columnDefinition = "TEXT")
     private String description;
     
     @Column(name = "task_done")
