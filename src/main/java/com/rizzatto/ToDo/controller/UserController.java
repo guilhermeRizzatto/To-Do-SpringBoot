@@ -18,12 +18,17 @@ import com.rizzatto.ToDo.dto.UserDtoResponse;
 import com.rizzatto.ToDo.entity.User;
 import com.rizzatto.ToDo.services.UserService;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
 	
 	@Autowired
 	private UserService service;
+	
+	@Autowired
+	private cookieController cookieController;
 	
 	@GetMapping("/get/all")
 	public ResponseEntity<List<UserDtoResponse>> get(){
@@ -52,10 +57,12 @@ public class UserController {
 	
 	
 	@PutMapping("/put")
-	public ResponseEntity<UserDtoResponse> update(@RequestBody UserDtoRequest request, @RequestParam Long id){
-		User user = service.update(id,request);
-		UserDtoResponse response = new UserDtoResponse(user);
-		return ResponseEntity.ok(response);
+	public ResponseEntity<UserDtoResponse> update(@RequestBody UserDtoRequest objRequest, @RequestParam Long id, HttpServletResponse response){
+		User user = service.update(id,objRequest);
+		cookieController.sendLoginCookies(response, user);
+		
+		UserDtoResponse objResponse = new UserDtoResponse(user);
+		return ResponseEntity.ok(objResponse);
 	}
 	
 	@DeleteMapping("/delete")

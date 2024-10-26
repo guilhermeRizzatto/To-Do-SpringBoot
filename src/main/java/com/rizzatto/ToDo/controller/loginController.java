@@ -14,12 +14,18 @@ import com.rizzatto.ToDo.dto.UserDtoResponse;
 import com.rizzatto.ToDo.entity.User;
 import com.rizzatto.ToDo.services.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/login")
 public class loginController {
 
 	@Autowired
 	private UserService service;
+	
+	@Autowired
+	private cookieController cookieController;
 
 	@PostMapping("/create")
 	public ResponseEntity<?> saveUser(@RequestBody UserDtoRequest request) {
@@ -32,17 +38,32 @@ public class loginController {
 	}
 
 	@GetMapping("/enter")
-	public ResponseEntity<?> get(@RequestParam(required = false) String email,
-			@RequestParam(required = false) String password) {
+	public ResponseEntity<?> get(@RequestParam(required = false) String email, @RequestParam(required = false) String password, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			User user = null;
-			if (email != null && password != null) {
-				user = service.login(email, password);
+			
+			String[] emailAndPassword = cookieController.getLoginCookies(request);
+			
+			if(emailAndPassword != null) {
+				if((emailAndPassword[0].equals(email) && emailAndPassword[1].equals(password)) || (email.equals("") || password.equals(""))) {
+					email = emailAndPassword[0];
+					password = emailAndPassword[1];	
+				}
 			}
+			
+			
+			user = service.login(email, password);
+			
+			cookieController.sendLoginCookies(response, user);
+			
 			return ResponseEntity.ok(new UserDtoResponse(user));
 		} catch (Exception e) {
 			return ResponseEntity.status(404).body(e.toString());
 		}
 	}
+	
+	
+	
+	
 
 }
