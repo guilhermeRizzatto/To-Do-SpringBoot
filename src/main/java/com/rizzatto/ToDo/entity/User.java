@@ -3,6 +3,8 @@ package com.rizzatto.ToDo.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.rizzatto.ToDo.enums.UserRole;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +31,8 @@ public class User {
     
     @Column(name = "user_password")
     private String password;
+    
+    private UserRole role;
 
     @OneToMany(mappedBy = "user")
     private List<Task> tasks = new ArrayList<>();
@@ -74,8 +78,17 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    
 
-    public List<Task> getTasks() {
+    public UserRole getRole() {
+		return role;
+	}
+
+	public void setRole(UserRole role) {
+		this.role = role;
+	}
+
+	public List<Task> getTasks() {
         return tasks;
     }
 

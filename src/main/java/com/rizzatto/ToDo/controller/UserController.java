@@ -16,61 +16,71 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rizzatto.ToDo.dto.UserDtoRequest;
 import com.rizzatto.ToDo.dto.UserDtoResponse;
 import com.rizzatto.ToDo.entity.User;
+import com.rizzatto.ToDo.services.TokenService;
 import com.rizzatto.ToDo.services.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	
+
 	@Autowired
 	private UserService service;
-	
+
 	@Autowired
 	private cookieController cookieController;
-	
+
+	@Autowired
+	private TokenService tokenService;
+
 	@GetMapping("/get/all")
-	public ResponseEntity<List<UserDtoResponse>> get(){
+	public ResponseEntity<List<UserDtoResponse>> get() {
 		List<User> users = service.getUsers();
 		List<UserDtoResponse> response = UserDtoResponse.createUsersDto(users);
 		return ResponseEntity.ok(response);
 	}
-	
+
 	@GetMapping("/get/one")
-	public ResponseEntity<UserDtoResponse> get(@RequestParam(required = false) String email, @RequestParam(required = false) String password, @RequestParam(required = false) Long id){
+	public ResponseEntity<UserDtoResponse> get(@RequestParam String email, HttpServletRequest request, HttpServletResponse response) {
 		Optional<User> user = null;
-		if(email != null) {
-			user = service.getByEmail(email);
-			if(user.isEmpty()) {
-				return ResponseEntity.notFound().build();
+
+		String token = "";
+
+		String[] emailAndPassword = cookieController.getLoginCookies(request);
+
+		if (emailAndPassword != null) {
+			if (emailAndPassword[0].equals(email) || (email.equals(""))) {
+				email = emailAndPassword[0];
 			}
 		}
-		if(id != null) {
-			user = service.getById(id);
-			if(user.isEmpty()) {
-				return ResponseEntity.notFound().build();
-			}
+	
+		user = service.getByEmail(email);
+
+		if (user.isEmpty()) {
+			return ResponseEntity.notFound().build();
 		}
+
+		token = this.tokenService.generateToken(user.get().getEmail());
+
+		cookieController.sendCookies(response, user.get(), token, null);
 		return ResponseEntity.ok(new UserDtoResponse(user.get()));
 	}
-	
-	
+
 	@PutMapping("/put")
-	public ResponseEntity<UserDtoResponse> update(@RequestBody UserDtoRequest objRequest, @RequestParam Long id, HttpServletResponse response){
-		User user = service.update(id,objRequest);
-		cookieController.sendLoginCookies(response, user);
-		
+	public ResponseEntity<UserDtoResponse> update(@RequestBody UserDtoRequest objRequest, @RequestParam Long id, HttpServletResponse response) {
+		User user = service.update(id, objRequest);
+		cookieController.sendCookies(response, user, null, null);
+
 		UserDtoResponse objResponse = new UserDtoResponse(user);
 		return ResponseEntity.ok(objResponse);
 	}
-	
+
 	@DeleteMapping("/delete")
-	public ResponseEntity<User> delete(@RequestParam Long id){
+	public ResponseEntity<User> delete(@RequestParam Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	
 
 }

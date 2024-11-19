@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.rizzatto.ToDo.dto.UserDtoRequest;
@@ -16,9 +17,13 @@ public class UserService {
 	@Autowired
 	private UserRepository repository;
 	
+	@Autowired
+	private PasswordEncoder passEncoder;
+	
 	public User save(UserDtoRequest userRequest) throws Exception{
 		if(repository.findByEmail(userRequest.getEmail()).isEmpty()){
 			User user = UserDtoRequest.createUser(userRequest);
+			user.setPassword(passEncoder.encode(user.getPassword()));
 			return repository.save(user);
 		}
 		throw new Exception("This email already exist");
@@ -39,7 +44,7 @@ public class UserService {
 		}
 		User user = obj.get();
 		
-		if(!user.getPassword().equals(password)) {
+		if(!passEncoder.matches(password, user.getPassword())) {
 			throw new Exception("Wrong password");
 		}
 		
