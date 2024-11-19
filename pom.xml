@@ -78,5 +78,9 @@
 
 	</dependencies>
 
+	<properties>
+		<start-class>com.baeldung.demo.DemoApplication</start-class>
+	</properties>
+
 
 </project>
