@@ -82,5 +82,13 @@
 		<start-class>com.rizzatto.ToDo.ToDoApplication</start-class>
 	</properties>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
