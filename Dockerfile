@@ -9,10 +9,10 @@ WORKDIR /app
 COPY pom.xml /app
 COPY src /app/src
 
-ARG DB.PASSWORD
+ARG DB_PASSWORD
 
 # Configurar as variáveis no container
-ENV DB.PASSWORD=${DB.PASSWORD}
+ENV DB.PASSWORD=${DB_PASSWORD}
 
 # Executar o build do Maven
 RUN mvn clean package -DskipTests
