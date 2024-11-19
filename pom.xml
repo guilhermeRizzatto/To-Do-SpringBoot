@@ -79,7 +79,7 @@
 	</dependencies>
 
 	<properties>
-		<start-class>com.baeldung.demo.DemoApplication</start-class>
+		<start-class>com.rizzatto.ToDo.ToDoApplication</start-class>
 	</properties>
 
 
