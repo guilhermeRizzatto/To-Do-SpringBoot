@@ -48,9 +48,13 @@ public class UserController {
 
 		String token = "";
 		
-		if(email == null || email.equals("")) {
+		System.out.println("email: " +  email);
+		
+		if(email == null || email.equals("") || email.isEmpty()) {
 			email = tokenService.validateToken(token);			
 		}
+		
+		System.out.println("email: " +  email);
 
 		user = service.getByEmail(email);
 
