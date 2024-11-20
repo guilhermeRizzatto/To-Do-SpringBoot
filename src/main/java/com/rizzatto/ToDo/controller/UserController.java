@@ -48,14 +48,6 @@ public class UserController {
 
 		String token = "";
 
-		String[] emailAndPassword = cookieController.getLoginCookies(request);
-
-		if (emailAndPassword != null) {
-			if (emailAndPassword[0].equals(email) || (email.equals(""))) {
-				email = emailAndPassword[0];
-			}
-		}
-	
 		user = service.getByEmail(email);
 
 		if (user.isEmpty()) {
@@ -64,14 +56,13 @@ public class UserController {
 
 		token = this.tokenService.generateToken(user.get().getEmail());
 
-		cookieController.sendCookies(response, user.get(), token, null);
+		cookieController.sendCookies(response, token, null);
 		return ResponseEntity.ok(new UserDtoResponse(user.get()));
 	}
 
 	@PutMapping("/put")
 	public ResponseEntity<UserDtoResponse> update(@RequestBody UserDtoRequest objRequest, @RequestParam Long id, HttpServletResponse response) {
 		User user = service.update(id, objRequest);
-		cookieController.sendCookies(response, user, null, null);
 
 		UserDtoResponse objResponse = new UserDtoResponse(user);
 		return ResponseEntity.ok(objResponse);

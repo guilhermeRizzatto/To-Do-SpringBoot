@@ -17,43 +17,23 @@ public class cookieController {
 	@DeleteMapping("/deleteLoginCookie")
 	public void deleteCookie(HttpServletResponse response) {
 		
-		Cookie loginCookie = new Cookie("loginCookie", "");
 		Cookie tokenCookie = new Cookie("token", "");
 		Cookie refreshTokenCookie = new Cookie("refreshToken", "");
 		
-		loginCookie.setHttpOnly(true);
-		loginCookie.setSecure(false);
-		loginCookie.setPath("/");
-		loginCookie.setDomain("");
-		response.addCookie(loginCookie);
-		
 		tokenCookie.setHttpOnly(true);
-		tokenCookie.setSecure(false);
+		tokenCookie.setSecure(true);
 		tokenCookie.setPath("/");
 		tokenCookie.setDomain("");
 		response.addCookie(tokenCookie);
 		
 		refreshTokenCookie.setHttpOnly(true);
-		refreshTokenCookie.setSecure(false);
+		refreshTokenCookie.setSecure(true);
 		refreshTokenCookie.setPath("/");
 		refreshTokenCookie.setDomain("");
 		response.addCookie(refreshTokenCookie);
 	}
 	
-	protected void sendCookies(HttpServletResponse response, User user, String token, String refreshToken) {
-		
-		if(user != null) {
-			String emailAndPassword = user.getEmail() + "|" + user.getPassword();	
-			Cookie loginCookie = new Cookie("loginCookie", emailAndPassword);
-			
-			loginCookie.setHttpOnly(true);
-			loginCookie.setSecure(true);
-			loginCookie.setPath("/");
-			loginCookie.setDomain("");
-			loginCookie.setAttribute("SameSite", "none");
-			response.addCookie(loginCookie);		
-		}
-		
+	protected void sendCookies(HttpServletResponse response, String token, String refreshToken) {
 		
 		if(token != null) {
 			Cookie tokenCookie = new Cookie("token", token);
@@ -78,20 +58,6 @@ public class cookieController {
 		}
 	}
 	
-	protected String[] getLoginCookies(HttpServletRequest request) {
-		Cookie[] cookies = request.getCookies();
-		String loginCookie = null;
-		
-		if(cookies != null) {
-			for(Cookie cookie : cookies) {
-				if("loginCookie".equals(cookie.getName())) {
-					loginCookie = cookie.getValue();
-					return loginCookie.replace("loginCookie=", "").split("\\|");			
-				}
-			}
-		}
-		return null;
-	}
 	
 	protected String getRefreshTokenCookie(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();

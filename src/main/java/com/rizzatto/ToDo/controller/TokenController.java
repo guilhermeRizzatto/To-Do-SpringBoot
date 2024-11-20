@@ -40,7 +40,7 @@ public class TokenController {
 		
 		String email = tokenService.validateRefreshToken(refreshToken);
 		
-		User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Usuario nao encontrado com esse token"));
+		User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found with this token"));
 		var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 		var authentication = new UsernamePasswordAuthenticationToken(user, null,authorities);
 		SecurityContextHolder.getContext().setAuthentication(authentication);;
@@ -48,7 +48,7 @@ public class TokenController {
 		String token = tokenService.generateToken(email);
 		refreshToken = tokenService.generateRefreshToken(email);
 		
-		cookieController.sendCookies(response, null, token, refreshToken);
+		cookieController.sendCookies(response, token, refreshToken);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(new UserDtoResponse(user));
 			

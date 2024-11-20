@@ -3,7 +3,6 @@ package com.rizzatto.ToDo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,9 +30,6 @@ public class loginController {
 	private cookieController cookieController;
 	
 	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@Autowired
 	private TokenService tokenService;
 	
 
@@ -52,21 +48,12 @@ public class loginController {
 		try {
 			User user = null;
 			
-			String[] emailAndPassword = cookieController.getLoginCookies(request);
-			
-			if(emailAndPassword != null) {
-				if((emailAndPassword[0].equals(email) && emailAndPassword[1].equals(password)) || (email.equals("") || password.equals(""))) {
-					email = emailAndPassword[0];
-					password = emailAndPassword[1];	
-				}
-			}
-			
 			user = service.login(email, password);
 			
 			String refreshToken = tokenService.generateRefreshToken(user.getEmail());
 			
 			String token = this.tokenService.generateToken(user.getEmail());
-			cookieController.sendCookies(response, user, token, refreshToken);
+			cookieController.sendCookies(response, token, refreshToken);
 			return ResponseEntity.status(HttpStatus.OK).body(new UserDtoResponse(user));
 				
 		} catch (Exception e) {
