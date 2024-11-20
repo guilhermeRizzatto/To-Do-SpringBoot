@@ -39,7 +39,7 @@ public class cookieController {
 			Cookie tokenCookie = new Cookie("token", token);
 			
 			tokenCookie.setHttpOnly(true);
-			tokenCookie.setSecure(true);
+			tokenCookie.setSecure(false);
 			tokenCookie.setPath("/");
 			tokenCookie.setDomain("");
 			tokenCookie.setAttribute("SameSite", "none");
