@@ -4,15 +4,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rizzatto.ToDo.entity.User;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/cookies")
-public class cookieController {
+public class CookieController {
 	
 	@DeleteMapping("/deleteLoginCookie")
 	public void deleteCookie(HttpServletResponse response) {
@@ -63,7 +61,7 @@ public class cookieController {
 	}
 	
 	
-	protected String getRefreshTokenCookie(HttpServletRequest request) {
+	public String getRefreshTokenCookie(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		
 		String token = null;
@@ -71,9 +69,23 @@ public class cookieController {
 		if(cookies != null) {
 			for(Cookie cookie : cookies) {
 				if("refreshToken".equals(cookie.getName())) {
-					System.out.println(cookie.getValue());
 					token = cookie.getValue();
 					return token.replace("refreshToken=", "");		
+				}
+			}
+		}
+		return null;
+	}
+	
+	public String recoverToken(HttpServletRequest request) {
+		Cookie[] cookies = request.getCookies();
+		String token = null;
+		
+		if(cookies != null) {
+			for(Cookie cookie : cookies) {
+				if("token".equals(cookie.getName())) {
+					token = cookie.getValue();
+					return token.replace("token=", "");		
 				}
 			}
 		}

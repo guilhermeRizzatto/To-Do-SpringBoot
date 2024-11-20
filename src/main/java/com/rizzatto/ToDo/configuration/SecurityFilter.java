@@ -10,13 +10,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.rizzatto.ToDo.controller.CookieController;
 import com.rizzatto.ToDo.entity.User;
 import com.rizzatto.ToDo.repository.UserRepository;
 import com.rizzatto.ToDo.services.TokenService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -29,9 +29,12 @@ public class SecurityFilter extends OncePerRequestFilter{
 	@Autowired
 	UserRepository userRepository;
 	
+	@Autowired
+	 CookieController cookieController;
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
-		String token = this.recoverToken(request);
+		String token = this.cookieController.recoverToken(request);
 		
 		String login = tokenService.validateToken(token);
 		
@@ -44,20 +47,5 @@ public class SecurityFilter extends OncePerRequestFilter{
 		filterChain.doFilter(request, response);
 	}
 	
-	private String recoverToken(HttpServletRequest request) {
-		Cookie[] cookies = request.getCookies();
-		String token = null;
-		
-		if(cookies != null) {
-			for(Cookie cookie : cookies) {
-				if("token".equals(cookie.getName())) {
-					System.out.println(cookie.getValue());
-					token = cookie.getValue();
-					return token.replace("token=", "");		
-				}
-			}
-		}
-		return null;
-	}
 
 }

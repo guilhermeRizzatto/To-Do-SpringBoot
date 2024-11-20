@@ -27,7 +27,7 @@ public class loginController {
 	private UserService service;
 	
 	@Autowired
-	private cookieController cookieController;
+	private CookieController cookieController;
 	
 	@Autowired
 	private TokenService tokenService;

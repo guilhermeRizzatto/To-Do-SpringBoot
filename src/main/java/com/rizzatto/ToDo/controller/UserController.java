@@ -30,7 +30,7 @@ public class UserController {
 	private UserService service;
 
 	@Autowired
-	private cookieController cookieController;
+	private CookieController cookieController;
 
 	@Autowired
 	private TokenService tokenService;
@@ -46,15 +46,11 @@ public class UserController {
 	public ResponseEntity<UserDtoResponse> get(@RequestParam String email, HttpServletRequest request, HttpServletResponse response) {
 		Optional<User> user = null;
 
-		String token = "";
-		
-		System.out.println("email: " +  email);
+		String token = cookieController.recoverToken(request);
 		
 		if(email == null || email.equals("") || email.isEmpty()) {
 			email = tokenService.validateToken(token);			
 		}
-		
-		System.out.println("email: " +  email);
 
 		user = service.getByEmail(email);
 

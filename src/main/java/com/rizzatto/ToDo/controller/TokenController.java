@@ -28,7 +28,7 @@ public class TokenController {
 	private TokenService tokenService;
 	
 	@Autowired
-	private cookieController cookieController;
+	private CookieController cookieController;
 	
 	@Autowired
 	UserRepository userRepository;
