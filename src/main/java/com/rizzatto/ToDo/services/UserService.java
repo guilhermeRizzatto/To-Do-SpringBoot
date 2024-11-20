@@ -60,8 +60,8 @@ public class UserService {
 		
 		if(!user.getName().equals(userToUpdate.getName())) {
 			user.setName(userToUpdate.getName());
-		} else if(!user.getPassword().equals(userToUpdate.getPassword())) {
-			user.setPassword(userToUpdate.getPassword());
+		} else if(!passEncoder.matches(userToUpdate.getPassword(), user.getPassword())) {
+			user.setPassword(passEncoder.encode(userToUpdate.getPassword()));
 		}
 		
 		return repository.save(user);
