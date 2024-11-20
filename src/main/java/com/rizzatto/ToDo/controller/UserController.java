@@ -47,12 +47,17 @@ public class UserController {
 		Optional<User> user = null;
 
 		String token = "";
+		
+		if(email == null || email.equals("")) {
+			email = tokenService.validateToken(token);			
+		}
 
 		user = service.getByEmail(email);
 
 		if (user.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
+	
 
 		token = this.tokenService.generateToken(user.get().getEmail());
 
