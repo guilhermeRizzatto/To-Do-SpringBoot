@@ -35,6 +35,7 @@ public class SecurityConfig {
 					.requestMatchers(HttpMethod.POST, "/login/create").permitAll()
 					.requestMatchers(HttpMethod.GET, "/login/enter").permitAll()
 					.requestMatchers(HttpMethod.POST, "/tokens/refresh").permitAll()
+					.requestMatchers(HttpMethod.DELETE, "/cookies/deleteLoginCookie").permitAll()
 					.anyRequest().authenticated()
 			)
 			.cors(Customizer.withDefaults())
