@@ -22,12 +22,14 @@ public class cookieController {
 		
 		tokenCookie.setHttpOnly(true);
 		tokenCookie.setSecure(true);
+		tokenCookie.setMaxAge(4);
 		tokenCookie.setPath("/");
 		tokenCookie.setDomain("");
 		response.addCookie(tokenCookie);
 		
 		refreshTokenCookie.setHttpOnly(true);
 		refreshTokenCookie.setSecure(true);
+		refreshTokenCookie.setMaxAge(4);
 		refreshTokenCookie.setPath("/");
 		refreshTokenCookie.setDomain("");
 		response.addCookie(refreshTokenCookie);
@@ -40,6 +42,7 @@ public class cookieController {
 			
 			tokenCookie.setHttpOnly(true);
 			tokenCookie.setSecure(true);
+			tokenCookie.setMaxAge(10800);
 			tokenCookie.setPath("/");
 			tokenCookie.setDomain("");
 			tokenCookie.setAttribute("SameSite", "none");
@@ -51,6 +54,7 @@ public class cookieController {
 			
 			tokenCookie.setHttpOnly(true);
 			tokenCookie.setSecure(true);
+			tokenCookie.setMaxAge(1296000);
 			tokenCookie.setPath("/");
 			tokenCookie.setDomain("");
 			tokenCookie.setAttribute("SameSite", "none");
