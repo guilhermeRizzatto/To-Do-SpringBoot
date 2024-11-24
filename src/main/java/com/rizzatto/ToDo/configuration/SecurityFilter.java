@@ -36,8 +36,8 @@ public class SecurityFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
 		String token = this.cookieController.recoverToken(request);
 		
-		if("/login/enter".equals(request.getRequestURI())) {
-			System.out.println("fez o filtro no login");
+		if(!"/login/enter".equals(request.getRequestURI()) || !"/login/create".equals(request.getRequestURI()) ) {
+			
 		}
 		
 		String login = tokenService.validateToken(token);
@@ -49,6 +49,11 @@ public class SecurityFilter extends OncePerRequestFilter{
 			SecurityContextHolder.getContext().setAuthentication(authentication);;
 		}
 		filterChain.doFilter(request, response);
+	}
+	
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) {
+		return request.getRequestURI().startsWith("/login") || request.getRequestURI().startsWith("/tokens/refresh") || request.getRequestURI().startsWith("/cookies/deleteLoginCookie");
 	}
 	
 
