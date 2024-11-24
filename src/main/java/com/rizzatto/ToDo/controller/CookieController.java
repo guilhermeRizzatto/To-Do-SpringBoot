@@ -31,7 +31,7 @@ public class CookieController {
 		refreshTokenCookie.setMaxAge(4);
 		refreshTokenCookie.setPath("/");
 		refreshTokenCookie.setDomain("");
-		tokenCookie.setAttribute("SameSite", "none");
+		refreshTokenCookie.setAttribute("SameSite", "none");
 		response.addCookie(refreshTokenCookie);
 	}
 	
