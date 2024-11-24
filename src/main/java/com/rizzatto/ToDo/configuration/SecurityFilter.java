@@ -36,7 +36,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
 		String token = this.cookieController.recoverToken(request);
 		
-		if("/login/create".equals(request.getRequestURI())) {
+		if("/login/enter".equals(request.getRequestURI())) {
 			System.out.println("fez o filtro no login");
 		}
 		
