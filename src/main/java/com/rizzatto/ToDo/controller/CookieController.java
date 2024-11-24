@@ -23,6 +23,7 @@ public class CookieController {
 		tokenCookie.setMaxAge(4);
 		tokenCookie.setPath("/");
 		tokenCookie.setDomain("");
+		tokenCookie.setAttribute("SameSite", "none");
 		response.addCookie(tokenCookie);
 		
 		refreshTokenCookie.setHttpOnly(true);
@@ -30,6 +31,7 @@ public class CookieController {
 		refreshTokenCookie.setMaxAge(4);
 		refreshTokenCookie.setPath("/");
 		refreshTokenCookie.setDomain("");
+		tokenCookie.setAttribute("SameSite", "none");
 		response.addCookie(refreshTokenCookie);
 	}
 	
